@@ -1,7 +1,7 @@
 import { CategoryAmount, CategoryName, AmountBox } from "./Category.js";
 
 function Budget({
-    value,
+    budgetItem,
     index,
     handleCategoryName,
     handleInput,
@@ -10,7 +10,7 @@ function Budget({
     tran,
     calcP,
     settings,
-    checkPersist
+    checkValue
   }) {
     return (
       <div className="row-budget">
@@ -18,13 +18,13 @@ function Budget({
           <CategoryName
             key={index}
             idval={index}
-            val={value}
-            id={value.id}
+            val={budgetItem}
+            id={budgetItem.id}
             categname={(eventData) => {
-              handleCategoryName(eventData, value.id, budget);
+              handleCategoryName(eventData, budgetItem.id, budget);
             }}
-            checkPersist={(event) => {
-              checkPersist(event, value)
+            checkValue={(event) => {
+              checkValue(event, budget)
             }}
           />
         </div>
@@ -32,17 +32,17 @@ function Budget({
           <CategoryAmount
             key={index}
             idval={index}
-            val={value.budgetamount}
-            id={value.id}
-            parentCallback={(event) => handleInput(event, budget, value.id)}
+            val={budgetItem.budgetamount}
+            id={budgetItem.id}
+            parentCallback={(event) => handleInput(event, budget, budgetItem.id)}
           />
         </div>
         <div className="amount-box" id="amountdiv">
           <AmountBox
             key={index}
             idval={index}
-            Numvalue={value}
-            Spent={value.spentamount}
+            budgetItem={budgetItem}
+            Spent={budgetItem.spentamount}
             trans={tran}
             calcP={calcP}
             pd={settings}
@@ -50,12 +50,12 @@ function Budget({
         </div>
         {/* <div className="deleteCat">
           <Delete
-            value={value}
+            value={budgetItem}
             index={index}
             key={index}
-            id={value[0]}
+            id={budgetItem[0]}
             callback={(stuff) => {
-              handleDelete(stuff, index, value[0]);
+              handleDelete(stuff, index, budgetItem[0]);
             }}
             boxv={box}
           />

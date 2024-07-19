@@ -1,4 +1,4 @@
-
+import { amountRemainingColor, amountRemainingInBudget } from "../utils/utilities";
 
 function CategoryAmount({ parentCallback, idval, val, id }) {
     return (
@@ -13,10 +13,10 @@ function CategoryAmount({ parentCallback, idval, val, id }) {
   }
 
   
-  function CategoryName({ categname, idval, val, id, checkPersist, budget }) {
+  function CategoryName({ categname, idval, val, id, checkValue, budget }) {
     return (
       <div className="category">
-        <input type="checkbox" id={idval} value="persist" checked={val[5]} className="checkbox" onClick={(event) => checkPersist(event, val)} />
+        <input type="checkbox" id={idval} value="checked" checked={val.check} className="checkbox" onChange={(event) => checkValue(event, budget)} />
         <input
           placeholder="Category"
           className="category-name"
@@ -28,31 +28,11 @@ function CategoryAmount({ parentCallback, idval, val, id }) {
   }
 
 
-  function AmountBox({ Numvalue, Spent, trans, calcP, pd }) {
-    let colorr = "black";
-    let realSpent = 0;
-    for (let x in trans) {
-      if (trans[x][3] === Numvalue[1]) { //matched category name
-        if (trans[x][4] > 0 && calcP(trans[x][2], pd[0].payday)) { //expense and in payperiod
-          realSpent += trans[x][4]
-        } else if (trans[x][4] > 0 && Numvalue[5] === true) { //expense all time and persist option true
-          realSpent += trans[x][4]
-        }
-        if (trans[x][5] > 0) {
-          realSpent -= trans[x][5]
-        }
-      }
-    }
-    const left = Numvalue[2] - realSpent
-    if (left < 0) {
-      colorr = "red"
-    } else {
-      colorr = "black"
-    }
-  
+  function AmountBox({ budgetItem, Spent, transaction, calcP, pd }) {
+      
     return (
-      <div className="amount-children" id="amountbox" style={{ color: colorr }}>
-        ¥{left.toLocaleString()}
+      <div className="amount-children" id="amountbox" style={{ color: amountRemainingColor(transaction, budgetItem) }}>
+        ¥{amountRemainingInBudget(transaction, budgetItem)}
       </div>
     );
   }

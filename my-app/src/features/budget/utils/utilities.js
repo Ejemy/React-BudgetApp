@@ -1,5 +1,5 @@
 import { modifyNum } from "../../../shared/utils/utilities.js";
-
+import { calculatePayperiod } from "../../../shared/utils/utilities.js";
 
 export const handleCategoryName = (event, id, budget) => {
   console.log("budget", id, budget);
@@ -39,3 +39,33 @@ export const handleBudgetAmountInput = (event, budget, id) => {
 //   setSavings(tempSavings);
 //   setAutotrans(tempAuto);
 // }
+
+export const amountRemainingColor = (transaction, budgetItem) => {
+  let defaultColor = "black";
+  const left = amountRemainingInBudget(transaction, budgetItem)
+  if (left < 0) {
+    defaultColor = "red"
+  } else {
+    defaultColor = "black"
+  }
+  return defaultColor;
+}
+
+
+export const amountRemainingInBudget = (transaction, budgetItem) => {
+  let realSpent = 0;
+  for (let x in transaction) {
+    if (transaction[x].category === budgetItem.category) {
+      if (transaction[x].expense > 0 && calculatePayperiod(transaction[x])) {
+        realSpent += transaction[x].expense
+      } else if (transaction[x].expense > 0 && budgetItem.persist === true) {
+        realSpent += transaction[x].expense
+        if (transaction[x].income > 0) {
+          realSpent -= transaction[x].income
+        }
+      }
+    }
+    const left = budgetItem[2] - realSpent
+    return left;
+  }
+}

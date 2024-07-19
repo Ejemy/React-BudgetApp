@@ -21,37 +21,20 @@ const db = mongoose.createConnection(url, { useNewUrlParser: true, useUnifiedTop
 var categorySchema = new mongoose.Schema({ _id: String, name: String, amount: Number, spent: Number, bdate: String, persist: Boolean });
 var transactionSchema = new mongoose.Schema({ _id: String, tname: String, date: Date, category: String, expense: Number, income: Number })
 var savingsSchema = new mongoose.Schema({ _id: String, sname: String, samount: Number, stotal: Number, sss: String, sdate: String })
-var autoTranSchema = new mongoose.Schema({ _id: String, adate: Date, acategory: String, aexpense: Number, aincome: Number, aaa: String })
-var settingsSchema = new mongoose.Schema({ payday: Number })
 let Category = db.model("Category", categorySchema);
 let Transaction = db.model("Transaction", transactionSchema)
 let Savings = db.model("Savings", savingsSchema)
-let Autotrans = db.model("Autotrans", autoTranSchema)
-let Settings = db.model("Settings", settingsSchema)
-
-
-app.post("/login", (req, res) => {
-  console.log(req.body)
-  if (req.body.passcode === process.env.PASS_KEY) {
-    res.json({ success: true })
-  }
-})
-
 
 
 app.get("/load", async (req, res) => {
   try {
     const data = await Category.find({})
-    const transD = await Transaction.find({}) //.sort({date: 1}) I should look into pagination
+    const transD = await Transaction.find({}) 
     const savingsD = await Savings.find({})
-    const autoD = await Autotrans.find({})
-    const setD = await Settings.find({})
 
     const combinedData = { category: data, transaction: transD, savings: savingsD, auto: autoD, settings: setD }
 
     return res.json(combinedData);
-
-
 
   } catch (err) {
     console.error("ERR:", err);

@@ -1,14 +1,16 @@
-
 function Savings({
     data,
     index,
     handleDelete,
+    newItem,
     savingsCallback,
     savingsname,
     savings,
+    checkValue
   }) {
     return (
       <div className="row-savings">
+        <input type="checkbox" id={index} value="checked" checked={data.check} className="checkbox" onChange={(event) => checkValue(event, savings)} />
         <input
           className="savings-name"
           placeholder="Savings Account Name"

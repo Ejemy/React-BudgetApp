@@ -1,39 +1,18 @@
 import {TransactionCategory} from "./TransactionCategory";
-import {Delete} from "../../../shared/components/Delete";
 
 
 function Row({
     index,
     data,
-    tran,
+    transaction,
     budget,
-    //handleDelete,
-    //handleChange,
-    save
+    save,
+    checkValue
   }) {
-    let checkifsave;
-    let savedate;
-    let savememo;
-    let savedata;
-    let saveexpend;
-    let saveincome;
-    let savenone;
-    if (save) {
-      checkifsave = "savediv";
-      savedate = "savedate";
-      savememo = "savememo";
-      savedata = "savedata";
-      saveexpend = "saveexpend";
-      saveincome = "saveincome";
-      savenone = "none"
-    } else {
-      saveexpend = "out"
-      saveincome = "in"
-    }
     return (
-      <div className="row-transaction" id={checkifsave}>
+      <div className="row-transaction" id={index}>
+        <input type="checkbox" id={index} value="checked" defaultChecked={data.check} className="checkbox" onClick={(event) => checkValue(event, transaction)} />
         <input
-          id={savedate}
           placeholder="Date"
           className="date"
           type="date"
@@ -46,7 +25,6 @@ function Row({
   
         />
         <input
-          id={savememo}
           placeholder="Memo"
           className="trans-name"
           value={data.description}
@@ -57,7 +35,6 @@ function Row({
           }}
         />
         <TransactionCategory
-          id={savedata}
           categories={budget}
           data={data.category}
   
@@ -68,7 +45,6 @@ function Row({
           }}
         />
         <input
-          id={saveexpend}
           placeholder="Expenditure"
           className="expend"
           value={"¥" + data.expense.toLocaleString()}
@@ -79,7 +55,6 @@ function Row({
           }}
         />
         <input
-          id={saveincome}
           placeholder="Income"
           className="income"
           value={"¥" + data.income.toLocaleString()}
@@ -90,17 +65,6 @@ function Row({
           }}
         />
         
-        <Delete
-          value={data}
-          index={index}
-          key={index}
-          id={data.id}
-          tran={tran}
-          transcallback={(stuff) => {
-            //handleDelete(stuff, index, data[0]);
-          }}
-          none={savenone}
-        />
       </div>
     );
   }
