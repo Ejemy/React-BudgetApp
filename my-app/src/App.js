@@ -14,6 +14,7 @@ import {
 import setState from "./shared/utils/setState.js";
 import { newItem, deleteItem, checkValue } from "./shared/utils/utilities.js";
 import { handleSavingsAmountInput, handleSavingsName } from "./features/savings/utils/utilities.js";
+import { handleTransactionChange } from "./features/transactions/utils/utilities.js";
 
 export default function App() {
   const date = new Date();
@@ -50,7 +51,7 @@ export default function App() {
   const [savings, setSavings] = useState(
     Array({
       id: "1a2b3c",
-      description: "",
+      category: "",
       savingsamount: 0,
       total: 0,
       date: date.toISOString(),
@@ -71,7 +72,7 @@ export default function App() {
   const [statistics, setStatistics] = useState({});
 
 
-  useEffect(()=> {
+  useEffect(() => {
     console.log("STATE CHECK")
     console.log("budget", budget)
     console.log("savings", savings)
@@ -89,6 +90,8 @@ export default function App() {
         }
       />
       <div className="budget">
+      <h1>Budget</h1>
+
         <AddButton
           newItem={() => setState(newItem(budget), setBudget)}
         />
@@ -105,11 +108,13 @@ export default function App() {
             budget={budget}
             tran={transaction}
             key={index}
-            checkValue = {(event)=> setState(checkValue(event, budget), setBudget)}
+            checkValue={(event) => setState(checkValue(event, budget), setBudget)}
           />
         ))}
       </div>
       <div className="transactions">
+      <h1>Transactions</h1>
+
         <AddButton
           newItem={() => setState(newItem(transaction), setTransaction)}
         />
@@ -117,26 +122,31 @@ export default function App() {
           <Row
             index={index}
             data={event}
-            tran={transaction}
+            transaction={transaction}
             budget={budget}
+            savings={savings}
             key={index}
-            checkValue = {(event)=> setState(checkValue(event, transaction), setTransaction)}
+            checkValue={(event) => setState(checkValue(event, transaction), setTransaction)}
+            handleTransactionChange={(w, x, y, z) => setState(handleTransactionChange(w, x, y, z), setTransaction)}
 
           />
         ))}
       </div>
       <div className="savings">
+      <h1>Savings</h1>
+
         <AddButton
           newItem={() => setState(newItem(savings), setSavings)}
         />
         {savings.map((value, index) => (
           <Savings
-            data={value}
+            savingsItem={value}
             index={index}
             savingsCallback={(x, y, z) => setState(handleSavingsAmountInput(x, y, z), setSavings)}
             savingsname={(x, y, z) => setState(handleSavingsName(x, y, z), setSavings)}
             savings={savings}
-            checkValue = {(event)=> setState(checkValue(event, savings), setSavings)}
+            checkValue={(event) => setState(checkValue(event, savings), setSavings)}
+            transactions={transaction}
 
           />
         ))}

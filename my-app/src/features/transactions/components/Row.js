@@ -1,4 +1,6 @@
 import {TransactionCategory} from "./TransactionCategory";
+import { modifyNum, addComas } from "../../../shared/utils/utilities.js";
+
 
 
 function Row({
@@ -6,8 +8,9 @@ function Row({
     data,
     transaction,
     budget,
-    save,
-    checkValue
+    checkValue,
+    handleTransactionChange,
+    savings
   }) {
     return (
       <div className="row-transaction" id={index}>
@@ -18,9 +21,7 @@ function Row({
           type="date"
           value={data.date.toString().slice(0, 10)}
           onChange={(event) => {
-            if (save) {
-              //handleChange(event.target.value, savedate)
-            }
+              handleTransactionChange(transaction, data, event.target.value, "date")
           }}
   
         />
@@ -29,39 +30,34 @@ function Row({
           className="trans-name"
           value={data.description}
           onChange={(event) => {
-            if (save) {
-              //handleChange(event.target.value, savememo)
-            }
+              handleTransactionChange(transaction, data, event.target.value, "description")
           }}
         />
         <TransactionCategory
-          categories={budget}
-          data={data.category}
-  
+          budget={budget}
+          index={index}
+          savings = {savings}
           change={(event) => {
-            if (save) {
-              //handleChange(event.target.value, savedata)
-            }
+            handleTransactionChange(transaction, data, event.target.value, "category")
+
           }}
         />
         <input
           placeholder="Expenditure"
           className="expend"
-          value={"¥" + data.expense.toLocaleString()}
+          value={"¥" + addComas(modifyNum(data.expense).toLocaleString())}
           onChange={(event) => {
-            if (save) {
-              //handleChange(event.target.value, saveexpend)
-            }
+            handleTransactionChange(transaction, data, event.target.value, "expense")
+
           }}
         />
         <input
           placeholder="Income"
           className="income"
-          value={"¥" + data.income.toLocaleString()}
+          value={"¥" + addComas(modifyNum(data.income).toLocaleString())}
           onChange={(event) => {
-            if (save) {
-              //handleChange(event.target.value, saveincome)
-            }
+            handleTransactionChange(transaction, data, event.target.value, "income")
+
           }}
         />
         

@@ -1,39 +1,36 @@
+import { calculateSavingsTotals } from "../utils/utilities";
+
 function Savings({
-    data,
+    savingsItem,
     index,
     handleDelete,
     newItem,
     savingsCallback,
     savingsname,
     savings,
-    checkValue
+    checkValue,
+    transactions
   }) {
     return (
       <div className="row-savings">
-        <input type="checkbox" id={index} value="checked" checked={data.check} className="checkbox" onChange={(event) => checkValue(event, savings)} />
+        <input type="checkbox" id={index} value="checked" checked={savingsItem.check} className="checkbox" onChange={(event) => checkValue(event, savings)} />
         <input
           className="savings-name"
           placeholder="Savings Account Name"
-          value={data.description}
+          value={savingsItem.description}
           onChange={(event) => savingsname(event, index, savings)}
         />
-        <input
-          className="savings-amount"
-          placeholder="Budgeted amount"
-          value={"¥" + data.savingsamount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          id="savings"
-          onChange={(event) => savingsCallback(event, savings, data.id)}
-        />
+        
         <div className="savings-total">
           {"¥" +
-            (data.total + data.savingsamount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            (calculateSavingsTotals(savingsItem, transactions)).toString()}
         </div>
         {/* <Delete
-          value={data}
+          value={savingsItem}
           index={index}
           key={index}
-          id={data[0]}
-          savingsDelcallback={(event) => handleDelete(event, index, data[0])}
+          id={savingsItem[0]}
+          savingsDelcallback={(event) => handleDelete(event, index, savingsItem[0])}
           sav={sav}
         /> */}
       </div>

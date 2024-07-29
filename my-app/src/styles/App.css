@@ -1,0 +1,54 @@
+.App {
+    height: 100%;
+    background-color: lightsteelblue;
+    display: grid;
+    grid-template-areas: "transactions transactions"
+                         "budget savings"
+                         "budget savings";
+
+}
+
+.budget {
+    background-color: indianred;
+    grid-area: budget;
+    display: flex;
+    height: 60vh;
+
+}
+
+.transactions{
+    grid-area: transactions;
+    background-color: deepskyblue;
+    height: 40vh;
+}
+.savings {
+    grid-area: savings;
+    background-color: darkcyan;
+    height: 60vh;
+}
+
+.budget,
+.transactions,
+.savings {
+    display: flex;
+    flex-flow: column wrap;
+    width: 100%;
+}
+
+.row-transaction {
+    height: auto;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+h1 {
+    text-align:center;
+    background-color:grey;
+}
+
+
+.trans-name, .options, .expend, .income {
+    flex-grow: 1;
+}

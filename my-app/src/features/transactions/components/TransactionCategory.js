@@ -1,21 +1,25 @@
 
 
-function TransactionCategory({ categories, change, index, data }) {
+function TransactionCategory({ budget, change, index, savings }) {
 
     return (
       <select
         name="dropdown"
         className="options"
-        value={data.category}
+        value={budget.category}
         onChange={(event) => change(event, index)}
       >
-        <option value="1" className="firstoption"></option>
         <option value="income" className="paycheck">
           Income
         </option>
-        {categories.map((item, index) => (
-          <option key={index} value={item[1]}>
-            {item[1]}
+        {budget.map((budget, index) => (
+          <option key={index} value={budget.category}>
+            {budget.category}
+          </option>
+        ))}
+        {savings.map((savings, index)=> (
+          <option key={index} value={savings.category}>
+            {savings.category}
           </option>
         ))}
       </select>

@@ -20,9 +20,22 @@ export const handleSavingsAmountInput = (event, savings, id) => {
 };
 
 export const handleSavingsName = (event, index, savings) => {
-  console.log(savings)
 
   const tempSavings = savings.slice();
-  tempSavings[index].description = event.target.value
+  tempSavings[index].category = event.target.value
+  console.log("SAVINGS", tempSavings)
   return tempSavings;
 };
+
+
+export const calculateSavingsTotals = (savings, transactions) => {
+  let total = 0;
+  console.log("CAL", savings, transactions)
+  for(let i in transactions){
+    if(transactions[i].category === savings.category && savings.category !== ""){
+      total -= transactions[i].expense;
+      total += transactions[i].income;
+    } 
+  }
+  return total;
+}

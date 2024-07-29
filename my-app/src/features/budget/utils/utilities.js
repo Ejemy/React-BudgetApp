@@ -19,14 +19,12 @@ export const handleBudgetAmountInput = (event, budget, id) => {
   let val = event.target.value;
   for (let i = 0; i < nextBudgetVal.length; i++) {
     if (nextBudgetVal[i].id === id) {
-      const arr = [...val];
-      const filterArr = [];
-      const boxstr = modifyNum(arr, filterArr);
-      const str = boxstr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      event.target.value = "¥" + str;
-      nextBudgetVal[i].budgetamount = parseFloat(boxstr);
+      
+      //event.target.value = "¥" + modifyNum(val);
+      nextBudgetVal[i].budgetamount = parseFloat(modifyNum(val))
     }
   }
+  console.log(nextBudgetVal)
 
   //calculateAndDisplaySpent(nextBudgetVal, tempSavings);
   return nextBudgetVal;
@@ -42,7 +40,7 @@ export const handleBudgetAmountInput = (event, budget, id) => {
 
 export const amountRemainingColor = (transaction, budgetItem) => {
   let defaultColor = "black";
-  const left = amountRemainingInBudget(transaction, budgetItem)
+  const left = amountRemainingInBudgetCategory(transaction, budgetItem)
   if (left < 0) {
     defaultColor = "red"
   } else {
@@ -52,7 +50,7 @@ export const amountRemainingColor = (transaction, budgetItem) => {
 }
 
 
-export const amountRemainingInBudget = (transaction, budgetItem) => {
+export const amountRemainingInBudgetCategory = (transaction, budgetItem) => {
   let realSpent = 0;
   for (let x in transaction) {
     if (transaction[x].category === budgetItem.category) {
@@ -65,7 +63,11 @@ export const amountRemainingInBudget = (transaction, budgetItem) => {
         }
       }
     }
-    const left = budgetItem[2] - realSpent
+    const left = budgetItem.bugetamount - realSpent
     return left;
   }
+}
+
+export const amountRemainingTotalBudget = (transaction, budget, savings) => {
+
 }

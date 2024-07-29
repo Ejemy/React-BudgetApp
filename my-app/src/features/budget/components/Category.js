@@ -1,4 +1,5 @@
-import { amountRemainingColor, amountRemainingInBudget } from "../utils/utilities";
+import { amountRemainingColor, amountRemainingInBudgetCategory } from "../utils/utilities";
+import { addComas } from "../../../shared/utils/utilities";
 
 function CategoryAmount({ parentCallback, idval, val, id }) {
     return (
@@ -6,7 +7,7 @@ function CategoryAmount({ parentCallback, idval, val, id }) {
         className="categorybox"
         placeholder="Budgeted"
         id="categoryamount"
-        value={"¥" + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        value={"¥" + addComas(val.toString())}
         onChange={(event) => parentCallback(event, idval, id)}
       />
     );
@@ -32,7 +33,7 @@ function CategoryAmount({ parentCallback, idval, val, id }) {
       
     return (
       <div className="amount-children" id="amountbox" style={{ color: amountRemainingColor(transaction, budgetItem) }}>
-        ¥{amountRemainingInBudget(transaction, budgetItem)}
+        ¥{amountRemainingInBudgetCategory(transaction, budgetItem)}
       </div>
     );
   }

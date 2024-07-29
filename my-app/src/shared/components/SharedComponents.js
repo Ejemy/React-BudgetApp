@@ -24,7 +24,7 @@ function Delete({
             <button
                 onClick = {deleteItem}
             >
-                -
+                DELETE
             </button>
         </div>
     )

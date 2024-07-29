@@ -1,13 +1,26 @@
-export const modifyNum = (arr, filterArr) => {
+export const modifyNum = (arr) => {
+  let filterArr = [];
+  if(!arr){
+    return 0
+  } 
+  console.log("arr",arr)
   for (let j = 0; j < arr.length; j++) {
     if (arr[j].match(/\d/)) {
       filterArr.push(arr[j]);
     }
   }
-  const boxvalstr = filterArr.join("");
+  if(filterArr[0] === "0"){
+    filterArr.shift();
+  }
+  let boxvalstr = filterArr.join("");
   return boxvalstr;
 }
 
+export const addComas = (val) =>{
+  const newNum = val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  //replace( /\d{1,3}(?=(\d{3})+(?!\d))/g , "$&,")
+  return newNum;
+}
 
 export const randomId = () => {
   const abc = "abcdefghijklmnopqrstuvwxyz!#$%";
