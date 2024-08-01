@@ -13,7 +13,7 @@ function TransactionCategory({ budget, change, index, savings }) {
           Income
         </option>
         {budget.map((budget, index) => (
-          <option key={index} value={budget.category}>
+          <option key={index} id="transaction-category" value={budget.category}>
             {budget.category}
           </option>
         ))}

@@ -1,8 +1,6 @@
-import { modifyNum } from "../../../shared/utils/utilities.js";
-import { calculatePayperiod } from "../../../shared/utils/utilities.js";
+import { modifyNum, parseNumber } from "../../../shared/utils/utilities.js";
 
 export const handleCategoryName = (event, id, budget) => {
-  console.log("budget", id, budget);
   const nextBudget = budget.slice();
   for (let i = 0; i < nextBudget.length; i++) {
     if (nextBudget[i].id === id) {
@@ -24,7 +22,6 @@ export const handleBudgetAmountInput = (event, budget, id) => {
       nextBudgetVal[i].budgetamount = parseFloat(modifyNum(val))
     }
   }
-  console.log(nextBudgetVal)
 
   //calculateAndDisplaySpent(nextBudgetVal, tempSavings);
   return nextBudgetVal;
@@ -51,23 +48,23 @@ export const amountRemainingColor = (transaction, budgetItem) => {
 
 
 export const amountRemainingInBudgetCategory = (transaction, budgetItem) => {
-  let realSpent = 0;
+  let spent = parseFloat(budgetItem.budgetamount);
   for (let x in transaction) {
+
+    let expense = parseNumber(transaction[x].expense)
+    let income = parseNumber(transaction[x].income)
     if (transaction[x].category === budgetItem.category) {
-      if (transaction[x].expense > 0 && calculatePayperiod(transaction[x])) {
-        realSpent += transaction[x].expense
-      } else if (transaction[x].expense > 0 && budgetItem.persist === true) {
-        realSpent += transaction[x].expense
-        if (transaction[x].income > 0) {
-          realSpent -= transaction[x].income
+      if (expense > 0) { // && calculatePayperiod(transaction[x])
+        spent -= expense
+      } else if (expense > 0 && budgetItem.persist === true) {
+        spent -= expense
+        if (income > 0) {
+          spent += income
         }
       }
     }
-    const left = budgetItem.bugetamount - realSpent
-    return left;
+    return spent;
   }
 }
 
-export const amountRemainingTotalBudget = (transaction, budget, savings) => {
 
-}

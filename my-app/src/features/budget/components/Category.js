@@ -2,41 +2,42 @@ import { amountRemainingColor, amountRemainingInBudgetCategory } from "../utils/
 import { addComas } from "../../../shared/utils/utilities";
 
 function CategoryAmount({ parentCallback, idval, val, id }) {
-    return (
+  return (
+    <input
+      maxLength="10"
+      className="categorybox"
+      placeholder="Budgeted"
+      id="categoryamount"
+      value={"¥" + addComas(val)}
+      onChange={(event) => parentCallback(event, idval, id)}
+    />
+  );
+}
+
+
+function CategoryName({ categname, idval, val, id, checkValue, budget }) {
+  return (
+    <div className="category">
       <input
-        className="categorybox"
-        placeholder="Budgeted"
-        id="categoryamount"
-        value={"¥" + addComas(val.toString())}
-        onChange={(event) => parentCallback(event, idval, id)}
+        maxLength="25"
+        placeholder="Category"
+        className="category-name"
+        value={val.category}
+        onChange={(event) => categname(event, idval, budget)}
       />
-    );
-  }
-
-  
-  function CategoryName({ categname, idval, val, id, checkValue, budget }) {
-    return (
-      <div className="category">
-        <input type="checkbox" id={idval} value="checked" checked={val.check} className="checkbox" onChange={(event) => checkValue(event, budget)} />
-        <input
-          placeholder="Category"
-          className="category-name"
-          value={val.category}
-          onChange={(event) => categname(event, idval, budget)}
-        />
-      </div>
-    );
-  }
+    </div>
+  );
+}
 
 
-  function AmountBox({ budgetItem, Spent, transaction, calcP, pd }) {
-      
-    return (
-      <div className="amount-children" id="amountbox" style={{ color: amountRemainingColor(transaction, budgetItem) }}>
-        ¥{amountRemainingInBudgetCategory(transaction, budgetItem)}
-      </div>
-    );
-  }
+function AmountBox({ budgetItem, Spent, transaction, calcP, pd }) {
+
+  return (
+    <div className="amount-children" id="amountbox" style={{ color: amountRemainingColor(transaction, budgetItem) }}>
+      ¥{addComas(amountRemainingInBudgetCategory(transaction, budgetItem))}
+    </div>
+  );
+}
 
 
-  export {CategoryAmount, CategoryName, AmountBox};
+export { CategoryAmount, CategoryName, AmountBox };

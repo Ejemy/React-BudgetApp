@@ -1,4 +1,5 @@
 import { calculateSavingsTotals } from "../utils/utilities";
+import { addComas } from "../../../shared/utils/utilities";
 
 function Savings({
     savingsItem,
@@ -15,6 +16,7 @@ function Savings({
       <div className="row-savings">
         <input type="checkbox" id={index} value="checked" checked={savingsItem.check} className="checkbox" onChange={(event) => checkValue(event, savings)} />
         <input
+        maxLength = "25"
           className="savings-name"
           placeholder="Savings Account Name"
           value={savingsItem.description}
@@ -23,7 +25,7 @@ function Savings({
         
         <div className="savings-total">
           {"¥" +
-            (calculateSavingsTotals(savingsItem, transactions)).toString()}
+            (addComas(calculateSavingsTotals(savingsItem, transactions)))}
         </div>
         {/* <Delete
           value={savingsItem}

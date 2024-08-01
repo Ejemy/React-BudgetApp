@@ -1,23 +1,31 @@
 export const modifyNum = (arr) => {
   let filterArr = [];
-  if(!arr){
+  if (!arr) {
     return 0
-  } 
-  console.log("arr",arr)
+  }
   for (let j = 0; j < arr.length; j++) {
     if (arr[j].match(/\d/)) {
       filterArr.push(arr[j]);
     }
   }
-  if(filterArr[0] === "0"){
+  if (filterArr[0] === "0") {
     filterArr.shift();
   }
   let boxvalstr = filterArr.join("");
   return boxvalstr;
 }
 
-export const addComas = (val) =>{
-  const newNum = val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export const addComas = (val) => {
+  let newNum;
+  if (typeof val === "string") {
+    newNum = val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  } else if (!val) {
+    newNum = 0;
+  } else {
+    newNum = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  }
+
   //replace( /\d{1,3}(?=(\d{3})+(?!\d))/g , "$&,")
   return newNum;
 }
@@ -49,12 +57,12 @@ export const deleteItem = (e, itemState) => {
       newItemState.push(stateCopy[i])
     }
   }
-  if (newItemState.length === stateCopy.length) {
-    const wipedObject = wipeObject(stateCopy[0])
-    return [wipedObject];
-  } else {
-    return newItemState;
-  }
+  // if (newItemState.length === stateCopy.length) {
+  //   const wipedObject = wipeObject(stateCopy[0])
+  //   return [wipedObject];
+  // } else {
+  return newItemState;
+  // }
 }
 
 function wipeObject(newObject) {
@@ -111,6 +119,14 @@ export const checkValue = (e, itemState) => {
   return stateCopy;
 }
 
+
+export const parseNumber = (num) => {
+  let newNum = parseFloat(num.toString().match(/\d+/g).join(""));
+  if (!num) {
+    return 0;
+  }
+  return newNum;
+}
 
 function calculateSpent(nextBudgetVal, nextTransaction) {
   // for (let x in nextBudgetVal) {

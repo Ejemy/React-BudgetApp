@@ -1,7 +1,6 @@
-import { modifyNum } from "../../../shared/utils/utilities.js";
+import { modifyNum, parseNumber } from "../../../shared/utils/utilities.js";
 
 export const handleSavingsAmountInput = (event, savings, id) => {
-  console.log(savings)
   const tempSavings = savings.slice();
   for (let i = 0; i < tempSavings.length; i++) {
     if (tempSavings[i].id === id) {
@@ -12,7 +11,7 @@ export const handleSavingsAmountInput = (event, savings, id) => {
       event.target.value = "¥" + str;
 
       tempSavings[i].savingsamount = parseFloat(boxstr);
-    
+
       //calculateTotal(tempSavings, nextBudgetVal);
     }
   }
@@ -23,19 +22,20 @@ export const handleSavingsName = (event, index, savings) => {
 
   const tempSavings = savings.slice();
   tempSavings[index].category = event.target.value
-  console.log("SAVINGS", tempSavings)
   return tempSavings;
 };
 
 
 export const calculateSavingsTotals = (savings, transactions) => {
   let total = 0;
-  console.log("CAL", savings, transactions)
-  for(let i in transactions){
-    if(transactions[i].category === savings.category && savings.category !== ""){
-      total -= transactions[i].expense;
-      total += transactions[i].income;
-    } 
+  for (let i in transactions) {
+    let expense = parseNumber(transactions[i].expense);
+    let income = parseNumber(transactions[i].income);
+
+    if (transactions[i].category === savings.category && savings.category !== "") {
+      total -= expense;
+      total += income;
+    }
   }
   return total;
 }

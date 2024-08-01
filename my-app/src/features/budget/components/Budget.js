@@ -7,13 +7,14 @@ function Budget({
     handleInput,
     handleDelete,
     budget,
-    tran,
+    transaction,
     calcP,
     settings,
     checkValue
   }) {
     return (
       <div className="row-budget">
+        <input maxLength = "10" type="checkbox" id={index} value="checked" checked={budgetItem.check} className="checkbox" onChange={(event) => checkValue(event, budget)} />
         <div className="categorydiv">
           <CategoryName
             key={index}
@@ -43,23 +44,12 @@ function Budget({
             idval={index}
             budgetItem={budgetItem}
             Spent={budgetItem.spentamount}
-            trans={tran}
+            transaction={transaction}
             calcP={calcP}
             pd={settings}
           />
         </div>
-        {/* <div className="deleteCat">
-          <Delete
-            value={budgetItem}
-            index={index}
-            key={index}
-            id={budgetItem[0]}
-            callback={(stuff) => {
-              handleDelete(stuff, index, budgetItem[0]);
-            }}
-            boxv={box}
-          />
-        </div> */}
+        
       </div>
     );
   }
