@@ -3,44 +3,68 @@ require("dotenv").config({ path: "./.gitignore/.env" });
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path")
-const url = process.env.MONGO_URI;
+const cors = require("cors")
+const url = "mongodb+srv://codyclackclack:sTeyVKExzgAFTYoA@cluster0.tb1gxvb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+const app = express();
+const corsOptions = {
+  origin: '*', 
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  headers: 'Content-Type, Authorization'
+};
+
+app.use(cors(corsOptions));
 
 
-// const app = express();
-// app.use(bodyParser.json());
+
+
+app.use(bodyParser.json());
 // app.use(
 //   bodyParser.urlencoded({
 //     extended: true,
 //   }),
 // );
-// app.use(express.static(path.join(__dirname, 'build')))
+
+app.use(express.static(path.join(__dirname, 'build')))
 
 
-// const db = mongoose.createConnection(url, { useNewUrlParser: true, useUnifiedTopology: true })
+var categorySchema = new mongoose.Schema({ _id: String, name: String, amount: Number, spent: Number, date: String, persist: Boolean });
+var transactionSchema = new mongoose.Schema({ _id: String, memo: String, date: Date, category: String, expense: Number, income: Number })
+var savingsSchema = new mongoose.Schema({ _id: String, name: String, amount: Number, total: Number, date: String })
+let Category = mongoose.model("Category", categorySchema);
+let Transaction = mongoose.model("Transaction", transactionSchema)
+let Saving = mongoose.model("Saving", savingsSchema)
 
-// var categorySchema = new mongoose.Schema({ _id: String, name: String, amount: Number, spent: Number, bdate: String, persist: Boolean });
-// var transactionSchema = new mongoose.Schema({ _id: String, tname: String, date: Date, category: String, expense: Number, income: Number })
-// var savingsSchema = new mongoose.Schema({ _id: String, sname: String, samount: Number, stotal: Number, sss: String, sdate: String })
-// let Category = db.model("Category", categorySchema);
-// let Transaction = db.model("Transaction", transactionSchema)
-// let Savings = db.model("Savings", savingsSchema)
+connect().catch(err=>console.log(err));
+
+async function connect(){
+  try{
+  await mongoose.connect(url);
+  }catch(err){
+    console.log(err)
+  }
+}
 
 
-// app.get("/load", async (req, res) => {
-//   try {
-//     const data = await Category.find({})
-//     const transD = await Transaction.find({}) 
-//     const savingsD = await Savings.find({})
 
-//     const combinedData = { category: data, transaction: transD, savings: savingsD, auto: autoD, settings: setD }
 
-//     return res.json(combinedData);
 
-//   } catch (err) {
-//     console.error("ERR:", err);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
+app.get("/load", async (req, res) => {
+  try {
+    const data = await Category.find({})
+    const transD = await Transaction.find({}) 
+    const savingsD = await Saving.find({})
+    console.log("dataTEST",data)
+    const combinedData = { categories: data, transactions: transD, savings: savingsD}
+    console.log(combinedData)
+
+    return res.json(combinedData);
+
+  } catch (err) {
+    console.error("ERR:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 
 // app.post("/update", async (req, res) => {

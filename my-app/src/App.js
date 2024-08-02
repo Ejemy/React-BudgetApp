@@ -17,6 +17,8 @@ import { newItem, deleteItem, checkValue, randomId } from "./shared/utils/utilit
 import { handleSavingsAmountInput, handleSavingsName } from "./features/savings/utils/utilities.js";
 import { checkBlanks, handleTransactionChange } from "./features/transactions/utils/utilities.js";
 
+import { load } from "./endpoints/load.js";
+
 export default function App() {
   const date = new Date();
 
@@ -73,6 +75,12 @@ export default function App() {
   );
 
   const [statistics, setStatistics] = useState({});
+
+
+useEffect(() => {
+  load();
+}, []);
+
 
 
   return (
