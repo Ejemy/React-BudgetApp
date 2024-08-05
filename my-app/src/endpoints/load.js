@@ -1,9 +1,11 @@
-export const load = () => {
+export async function load() {
   console.log("load function")
-  fetch("/load")
+   await fetch("/load")
     .then((response) => response.json())
     .then((data) => {
       console.log("LOAD payload:", data);
       return data
     });
 }
+
+

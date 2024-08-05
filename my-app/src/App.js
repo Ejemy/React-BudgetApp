@@ -78,7 +78,10 @@ export default function App() {
 
 
 useEffect(() => {
-  load();
+ (async function(){
+    const data = await load();
+    console.log("datadata", data)
+  })()
 }, []);
 
 

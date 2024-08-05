@@ -1,10 +1,14 @@
 const express = require("express");
-require("dotenv").config({ path: "./.gitignore/.env" });
+require("dotenv").config();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path")
 const cors = require("cors")
-const url = "mongodb+srv://codyclackclack:sTeyVKExzgAFTYoA@cluster0.tb1gxvb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const url = `mongodb+srv://codyclackclack:${process.env.MONGODB_PASS}@cluster0.tb1gxvb.mongodb.net/budget?retryWrites=true&w=majority&appName=Cluster0`
+const Category = require("./models/category.js")
+const Saving = require("./models/saving.js")
+const Transaction = require("./models/transaction.js")
+
 
 const app = express();
 const corsOptions = {
@@ -28,15 +32,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'build')))
 
 
-var categorySchema = new mongoose.Schema({ _id: String, name: String, amount: Number, spent: Number, date: String, persist: Boolean });
-var transactionSchema = new mongoose.Schema({ _id: String, memo: String, date: Date, category: String, expense: Number, income: Number })
-var savingsSchema = new mongoose.Schema({ _id: String, name: String, amount: Number, total: Number, date: String })
-let Category = mongoose.model("Category", categorySchema);
-let Transaction = mongoose.model("Transaction", transactionSchema)
-let Saving = mongoose.model("Saving", savingsSchema)
-
-connect().catch(err=>console.log(err));
-
 async function connect(){
   try{
   await mongoose.connect(url);
@@ -46,7 +41,7 @@ async function connect(){
 }
 
 
-
+connect().catch(err=>console.log(err));
 
 
 app.get("/load", async (req, res) => {
@@ -56,7 +51,6 @@ app.get("/load", async (req, res) => {
     const savingsD = await Saving.find({})
     console.log("dataTEST",data)
     const combinedData = { categories: data, transactions: transD, savings: savingsD}
-    console.log(combinedData)
 
     return res.json(combinedData);
 
